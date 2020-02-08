@@ -25,6 +25,10 @@ class WindowsCommand(PluginCommand):
               VENV  The location of the virtual environment. If not
                     specified it is ENV3 in your home directory
 
+          Bugs:
+              This program is supposed to be implemented. It is at this
+              time just a template
+
         """
 
         w = Windows()
