@@ -36,15 +36,17 @@ class WindowsCommand(PluginCommand):
         venv = arguments.VENV or "~/ENV3"
         venv = path_expand(venv)
 
-       # w.check_venv(venv=venv)
+        #w.check_venv(venv=venv)
+
 
         #if not w.is_venv(venv=venv):
-         #   Console.error("you forgot to cativate the venv")
+            #Console.error("you forgot to cativate the venv")
 
         w.check_command("python --version", test="3.8.1")
-        w.check_command("pip --version", test="20.0.2")
+        w.check_command("python --version", test="20.0.2")
         w.check_command("cl", test="Microsoft (R) C/C++ Optimizing Compiler Version")
         w.check_command("cl", test="usage: cl [ option... ] filename... [ /link linkoption... ]")
-        #w.check_command("nmake", test ="Microsoft (R) Program Maintenance Utility Version")
+        #w.check_command("nmake",test= "Microsoft (R) Program Maintenance Utility Version")
+
 
         return ""
