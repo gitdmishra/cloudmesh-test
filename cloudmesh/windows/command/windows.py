@@ -42,7 +42,7 @@ class WindowsCommand(PluginCommand):
             Console.error("you forgot to cativate the venv")
 
         w.check_command("python --version", test="3.8.1")
-        w.check_command("python --version", test="20.0.2")
+        w.check_command("pip --version", test="20.0.2")
         w.check_command("cl")
         w.check_command("nmake")
 
