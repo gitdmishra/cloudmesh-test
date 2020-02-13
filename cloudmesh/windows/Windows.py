@@ -48,4 +48,5 @@ class WindowsCommand(PluginCommand):
         w.check_command("cl", test="usage: cl [ option... ] filename... [ /link linkoption... ]")
         #w.check_command("nmake",test= "Microsoft (R) Program Maintenance Utility Version")
 
+
         return ""
