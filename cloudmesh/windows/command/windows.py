@@ -31,7 +31,7 @@ class WindowsCommand(PluginCommand):
 
         """
 
-        w = WindowsProvider()
+        w = Windows()
 
         venv = arguments.VENV or "~/ENV3"
         venv = path_expand(venv)
