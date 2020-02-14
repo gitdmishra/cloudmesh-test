@@ -1,52 +1,49 @@
-from __future__ import print_function
-from cloudmesh.shell.command import command
-from cloudmesh.shell.command import PluginCommand
-from cloudmesh.windows.Windows import Windows
-from cloudmesh.common.console import Console
+from cloudmesh.common.Shell import Shell
+from cloudmesh.common.util import banner
 from cloudmesh.common.util import path_expand
+from cloudmesh.common.console import Console
 
-from cloudmesh.common.debug import VERBOSE
+class Windows:
 
-class WindowsCommand(PluginCommand):
+    def check_command(self,command, test=None):
 
-    # noinspection PyUnusedLocal
-    @command
-    def do_windows(self, args, arguments):
-        """
-        ::
+        banner(f"testing command: {command}")
+        result = Shell.run(command)
 
-          Usage:
-                windows check [VENV]
+        print(result)
 
-          This command is intended to check if your windows set up is
-          correctly done.
+        print (f"{test} is {result} is in the output")
+        if not test in result:
+            Console.error("{result} is not in output")
+        else:
+            Console.ok("test passed")
 
-          Arguments:
-              VENV  The location of the virtual environment. If not
-                    specified it is ENV3 in your home directory
+    def check_venv(self, venv="~/ENV3"):
+        where = path_expand((venv))
 
-          Bugs:
-              This program is supposed to be implemented. It is at this
-              time just a template
+        # check if the dir exists at where
+        raise NotImplementedError
 
-        """
+        # check if activate exists in ~\ENV3\Scripts\activate.bat
 
-        w = Windows()
+        raise NotImplementedError
 
-        venv = arguments.VENV or "~/ENV3"
-        venv = path_expand(venv)
+    def is_venv(self, venv="~/ENV3"):
 
-        #w.check_venv(venv=venv)
+        # execute where python and check if venv is in the path
 
+        raise NotImplementedError
 
-        #if not w.is_venv(venv=venv):
-            #Console.error("you forgot to cativate the venv")
+        # chek if venv path is the in the first line
 
-        w.check_command("python --version", test="3.8.1")
-        w.check_command("python --version", test="20.0.2")
-        w.check_command("cl", test="Microsoft (R) C/C++ Optimizing Compiler Version")
-        w.check_command("cl", test="usage: cl [ option... ] filename... [ /link linkoption... ]")
-        #w.check_command("nmake",test= "Microsoft (R) Program Maintenance Utility Version")
+        raise NotImplementedError
 
+        # execute where pip and check if venv is in the path
 
-        return ""
+        raise NotImplementedError
+
+        # chek if venv path is the in the first line
+
+        raise NotImplementedError
+
+        return True

@@ -1,7 +1,7 @@
 from __future__ import print_function
 from cloudmesh.shell.command import command
 from cloudmesh.shell.command import PluginCommand
-from cloudmesh.windows.Windows import Windows as WindowsProvider
+from cloudmesh.windows.Windows import Windows
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
 
