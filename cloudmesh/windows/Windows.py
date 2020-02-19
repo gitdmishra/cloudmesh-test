@@ -6,6 +6,7 @@ import sys
 from subprocess import CalledProcessError
 
 import psutil
+from pathlib import Path
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
@@ -50,7 +51,7 @@ class Windows:
 
     def check_yaml(self):
         config = Config()
-
+        errors = False
         if "chameleon" in config["cloudmesh.cloud"]:
             credentials = config["cloudmesh.cloud.chameleon.credentials"]
             if "OS_PASSWORD" in credentials:
@@ -60,16 +61,24 @@ class Windows:
         location = config.location
         print(f"Location of cloudmesh.yaml: {location}")
         print("we run a simple yamllint test. Not all issues reported need to be corrected.")
-        result = Shell.run(f"yamllint {location}/cloudmesh.yaml")
+
+        yamlfile = Path(f"{location}/cloudmesh.yaml")
+        result = Shell.run(f"yamllint {yamlfile}")
         for line in result.splitlines():
+            line = line.strip()
             if "missing document start" in line:
                 continue
             if "line too long" in line:
                 continue
             if "error" in line:
+                errors = True
                 Console.error (line)
             else:
                 print(line)
+        if errors:
+            Console.error("We found issues in your yaml file")
+        else:
+            Console.ok(f"OK. Your yaml file {yamlfile} seems valid")
 
     def usage(self):
         hdd = psutil.disk_usage('/')
