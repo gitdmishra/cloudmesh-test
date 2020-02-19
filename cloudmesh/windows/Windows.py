@@ -9,6 +9,7 @@ import psutil
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
+from cloudmesh.configuration.Config import Config
 
 """
 are you running in a vnenv
@@ -46,6 +47,29 @@ class Windows:
 
     def __init__(self):
         pass
+
+    def check_yaml(self):
+        config = Config()
+
+        if "chameleon" in config["cloudmesh.cloud"]:
+            credentials = config["cloudmesh.cloud.chameleon.credentials"]
+            if "OS_PASSWORD" in credentials:
+                Console.error("You are using an old version of the cloudmesh.yaml file")
+            else:
+                Console.ok("your yaml file seems ok")
+        location = config.location
+        print(f"Location of cloudmesh.yaml: {location}")
+        print("we run a simple yamllint test. Not all issues reported need to be corrected.")
+        result = Shell.run(f"yamllint {location}/cloudmesh.yaml")
+        for line in result.splitlines():
+            if "missing document start" in line:
+                continue
+            if "line too long" in line:
+                continue
+            if "error" in line:
+                Console.error (line)
+            else:
+                print(line)
 
     def usage(self):
         hdd = psutil.disk_usage('/')

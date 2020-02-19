@@ -29,7 +29,7 @@ def readfile(filename):
 #
 requiers = """
 psutil
-pygments
+yamllint
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']

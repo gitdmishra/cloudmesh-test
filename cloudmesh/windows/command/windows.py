@@ -77,4 +77,6 @@ class WindowsCommand(PluginCommand):
         w.check_command("VirtualBox --help", test="Oracle VM VirtualBox VM Selector", show=False)
 
         w.usage()
+        w.check_command("yamllint", test="usage: yamllint")
+        w.check_yaml()
         return ""
