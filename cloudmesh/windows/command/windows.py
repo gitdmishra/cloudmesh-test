@@ -74,4 +74,6 @@ class WindowsCommand(PluginCommand):
 
         w.is_user_name_valid()
         w.check_mongo()
+
+        w.usage()
         return ""

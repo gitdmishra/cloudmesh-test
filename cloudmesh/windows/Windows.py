@@ -9,34 +9,30 @@ import getpass
 import platform
 import socket
 import sys
+import psutil
 
 """
-e you running in a vnenv
+are you running in a vnenv
 are you running python 3.8.1
 are you running the 64 bit version of python
 are you having the newest version of pip
 is the default mongo port used
+is cl installed
+
 do you have docker installed
 do you have vbox installed
 is hyperv switched on or off
-is cl installed
 how much memory do you have
 do you have free diskspace
-.... other tyings that can help us debug your environment 
 are containers running
+.... other tyings that can help us debug your environment 
 """
 
 """
 find equifalent for windows
 
 if os == "darwin":
-    import psutil
     
-    hdd = psutil.disk_usage('/')
-    
-    print ("Total: %d GiB" % hdd.total / (2**30))
-    print ("Used: %d GiB" % hdd.used / (2**30))
-    print ("Free: %d GiB" % hdd.free / (2**30))
     
 Shell.run("df -h")
 
@@ -69,6 +65,18 @@ class Windows:
 
     def __init__(self):
         check = []
+
+    def usage(self):
+        hdd = psutil.disk_usage('/')
+        print("Disk Space")
+        print("Total: {total:.0f} GiB".format(total=hdd.total / (2 ** 30)))
+        print("Used: {used:.0f} GiB".format(used=hdd.used / (2 ** 30)))
+        print("Free: {free:.0f} GiB".format(free=hdd.free / (2 ** 30)))
+
+        mem = psutil.virtual_memory()
+        total = mem.total >> 30
+        available = mem.available >> 30
+        print (f"Memory: {available}GB free from {total}GB")
 
     def is_port_used(self, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
