@@ -4,6 +4,7 @@ from cloudmesh.shell.command import PluginCommand
 from cloudmesh.windows.Windows import Windows
 from cloudmesh.common.console import Console
 from cloudmesh.common.util import path_expand
+import platform
 
 from cloudmesh.common.debug import VERBOSE
 
@@ -16,14 +17,10 @@ class WindowsCommand(PluginCommand):
         ::
 
           Usage:
-                windows check [VENV]
+                windows check
 
           This command is intended to check if your windows set up is
           correctly done.
-
-          Arguments:
-              VENV  The location of the virtual environment. If not
-                    specified it is ENV3 in your home directory
 
           Bugs:
               This program is supposed to be implemented. It is at this
@@ -56,19 +53,14 @@ class WindowsCommand(PluginCommand):
 
         w = Windows()
 
-        venv = arguments.VENV or "~/ENV3"
-        venv = path_expand(venv)
-
-        w.check_venv(venv=venv)
-
-        if not w.is_venv_exists(venv=venv):
-            Console.error("you forgot to activate the venv")
+        w.check_venv()
 
         w.check_command("python --version", test="3.8.1")
         w.check_python()
         w.check_command("pip --version", test="20.0.2")
-        w.check_command("cl")
-        w.check_command("nmake")
+        if platform.system() == "Windows":
+            w.check_command("cl")
+            w.check_command("nmake")
         w.is_user_name_valid()
         w.check_mongo()
         return ""

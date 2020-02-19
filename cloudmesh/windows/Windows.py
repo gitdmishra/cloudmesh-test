@@ -87,7 +87,7 @@ class Windows:
 
             self.check_command("mongod.exe") # find a good test
 
-        if self.is_port_used("27017"):
+        if self.is_port_used(27017):
             Console.error("The mongo port 27017 is already used")
         else:
             Console.ok("The mongo port 27017 is free")
@@ -108,15 +108,13 @@ class Windows:
         try:
             result = Shell.run(command)
 
-            print(f"{test} is {result} is in the output")
             if not test in result:
-                Console.error("{result} is not in output")
+                Console.error("{test} not found in {result}")
             else:
                 Console.ok("test passed")
 
         except CalledProcessError:
             Console.error(f"command '{command}' not successful")
-        #print(result)
 
 
     #
