@@ -38,12 +38,12 @@ class WindowsCommand(PluginCommand):
 
         w.check_venv(venv=venv)
 
-        if not w.is_venv(venv=venv):
-            Console.error("you forgot to cativate the venv")
+        if not w.is_venv_exists(venv=venv):
+            Console.error("you forgot to activate the venv")
 
         w.check_command("python --version", test="3.8.1")
         w.check_command("pip --version", test="20.0.2")
         w.check_command("cl")
         w.check_command("nmake")
-
+        w.is_user_name_valid()
         return ""
