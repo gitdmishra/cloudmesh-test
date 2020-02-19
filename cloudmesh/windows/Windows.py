@@ -27,6 +27,20 @@ TODO
 is hyperv switched on or off
 are containers running
 .... other tyings that can help us debug your environment 
+
+https://stackoverflow.com/questions/30496116/how-to-disable-hyper-v-in-command-line
+
+In an elevated Command Prompt write this :
+
+To disable:
+
+bcdedit /set hypervisorlaunchtype off
+
+To enable:
+
+bcdedit /set hypervisorlaunchtype auto 
+
+
 """
 
 class Windows:
