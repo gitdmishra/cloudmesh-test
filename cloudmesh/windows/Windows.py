@@ -6,10 +6,12 @@ from cloudmesh.common.util import path_expand
 from cloudmesh.common.console import Console
 import os
 import getpass
+import platform
 
 """
 e you running in a vnenv
 are you running python 3.8.1
+are you running the 64 bit version of python
 are you having the newest version of pip
 is the default mongo port used
 do you have docker installed
@@ -65,6 +67,15 @@ test for os.environ['VIRTUAL_ENV']
 """
 
 class Windows:
+
+    def check_python(self):
+        length = platform.architecture()[0]
+        if  length == "32bit":
+            Console.error("You run Python 32 bit")
+        elif length == "64bit":
+            Console.ok("You run Python 64 bit")
+        else:
+            Console.error(f"Pythin is not 32 or 64 bit: {length}")
 
     def check_command(self,command, test=None):
 
