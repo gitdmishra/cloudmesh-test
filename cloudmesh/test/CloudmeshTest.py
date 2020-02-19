@@ -44,7 +44,7 @@ bcdedit /set hypervisorlaunchtype auto
 
 """
 
-class Windows:
+class CloudmeshTest:
 
     def __init__(self):
         pass

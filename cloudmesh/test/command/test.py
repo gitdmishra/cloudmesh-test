@@ -4,19 +4,19 @@ import platform
 
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
-from cloudmesh.windows.Windows import Windows
+from cloudmesh.test.CloudmeshTest import CloudmeshTest
 
 
-class WindowsCommand(PluginCommand):
+class TestCommand(PluginCommand):
 
     # noinspection PyUnusedLocal
     @command
-    def do_windows(self, args, arguments):
+    def do_test(self, args, arguments):
         """
         ::
 
           Usage:
-                windows check
+                test
 
           This command is intended to check if your windows set up is
           correctly done.
@@ -50,33 +50,33 @@ class WindowsCommand(PluginCommand):
 
         """
 
-        w = Windows()
+        tester = CloudmeshTest()
 
         #
         # Python setup
         #
-        w.check_venv()
-        w.check_command("python --version", test="3.8.1")
-        w.check_python()
-        w.check_command("pip --version", test="20.0.2")
+        tester.check_venv()
+        tester.check_command("python --version", test="3.8.1")
+        tester.check_python()
+        tester.check_command("pip --version", test="20.0.2")
 
         #
         # command tool setup
         #
 
         if platform.system() == "Windows":
-            w.check_command("cl")
-            w.check_command("nmake")
-        w.check_command("git --version", test="git version")
-        w.check_command("ssh", test="usage", show=False)
-        w.check_command("ssh-keygen --help", test="usage", show=False)
+            tester.check_command("cl")
+            tester.check_command("nmake")
+        tester.check_command("git --version", test="git version")
+        tester.check_command("ssh", test="usage", show=False)
+        tester.check_command("ssh-keygen --help", test="usage", show=False)
 
-        w.is_user_name_valid()
-        w.check_mongo()
-        w.check_command("docker --version", test="Docker version")
-        w.check_command("VirtualBox --help", test="Oracle VM VirtualBox VM Selector", show=False)
+        tester.is_user_name_valid()
+        tester.check_mongo()
+        tester.check_command("docker --version", test="Docker version")
+        tester.check_command("VirtualBox --help", test="Oracle VM VirtualBox VM Selector", show=False)
 
-        w.usage()
-        w.check_command("yamllint", test="usage: yamllint", show=False)
-        w.check_yaml()
+        tester.usage()
+        tester.check_command("yamllint", test="usage: yamllint", show=False)
+        tester.check_yaml()
         return ""
