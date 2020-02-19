@@ -106,7 +106,7 @@ class Windows:
         return flag_venv,line
 
     def is_user_name_valid(self):
-
+        banner("Check For User Name")
         username = getpass.getuser()
 
         if " " not in username:

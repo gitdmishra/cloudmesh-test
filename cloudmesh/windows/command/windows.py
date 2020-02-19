@@ -45,5 +45,5 @@ class WindowsCommand(PluginCommand):
         w.check_command("pip --version", test="20.0.2")
         w.check_command("cl")
         w.check_command("nmake")
-
+        w.is_user_name_valid()
         return ""
