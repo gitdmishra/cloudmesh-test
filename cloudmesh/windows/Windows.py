@@ -67,6 +67,8 @@ test for os.environ['VIRTUAL_ENV']
 
 """
 
+
+
 class Windows:
 
     def is_port_used(self, port):
@@ -74,15 +76,16 @@ class Windows:
             return s.connect_ex(('localhost', port)) == 0
 
     def check_mongo(self):
-        result = Shell.run("sc.exe query MongoDB")
-        if "The specified service does not exist" in result \
-            and "FAILED" in result:
-            Console.ok("The MongoDB service is not running")
-        else:
-            Console.error("The MOngo DB service is running")
-            Console.error(result)
+        if platform.system() == "Windows":
+            result = Shell.run("sc.exe query MongoDB")
+            if "The specified service does not exist" in result \
+                and "FAILED" in result:
+                Console.ok("The MongoDB service is not running")
+            else:
+                Console.error("The MOngo DB service is running")
+                Console.error(result)
 
-        self.check_command("mongod.exe") # find a good test
+            self.check_command("mongod.exe") # find a good test
 
         if self.is_port_used("27017"):
             Console.error("The mongo port 27017 is already used")
@@ -125,43 +128,50 @@ class Windows:
 
         banner(f"checking python environment setup")
 
-        where = path_expand((venv))
-        activate_path = where + "\\Scripts\\activate.bat"
-        # check if the dir exists at where
-        if os.path.isdir(where):
-            Console.ok("ENV3 directory exists")
-        else:
-            Console.error("ENV3 directory does not exists")
+        if platform.system() == "Windows":
+            where = path_expand((venv))
+            activate_path = where + "\\Scripts\\activate.bat"
+            # check if the dir exists at where
+            if os.path.isdir(where):
+                Console.ok("ENV3 directory exists")
+            else:
+                Console.error("ENV3 directory does not exists")
 
-        # check if activate exists in ~\ENV3\Scripts\activate.bat
-        if os.path.isfile(activate_path):
-            Console.ok("Activate exists in {activate_path}")
-        else:
-            Console.error("Could not find {activate_path}")
+            # check if activate exists in ~\ENV3\Scripts\activate.bat
+            if os.path.isfile(activate_path):
+                Console.ok("Activate exists in {activate_path}")
+            else:
+                Console.error("Could not find {activate_path}")
 
     def is_venv_exists(self, venv="~/ENV3"):
         venv_path = path_expand((venv))
 
         # execute where python and check if venv is in the path
 
-        command = "where python"
-        result = Shell.run(command)
-        flag_venv,line = self.is_venv_in_path(result, venv_path)
+        if platform.system() == "Windows":
+            command = "where python"
+            result = Shell.run(command)
+            flag_venv,line = self.is_venv_in_path(result, venv_path)
 
-        if flag_venv:
-            Console.ok(f"'{command}' : venv is in path")
-        else:
-            Console.error(f"'{command}' : venv is not in path")
+            if flag_venv:
+                Console.ok(f"'{command}' : venv is in path")
+            else:
+                Console.error(f"'{command}' : venv is not in path")
 
-        # chek if venv path is the in the first line
-        if line == 1:
-            Console.ok(f"'{command}' : venv is in first line")
-        else:
-            Console.error(f"'{command}' : venv is not first line")
+            # chek if venv path is the in the first line
+            if line == 1:
+                Console.ok(f"'{command}' : venv is in first line")
+            else:
+                Console.error(f"'{command}' : venv is not first line")
 
         # execute where pip and check if venv is in the path
 
-        command = "where pip"
+        if platform.system() == "Windows":
+            command = "where pip"
+        else:
+            command = "which pip"
+
+
         result = Shell.run(command)
         flag_venv, line = self.is_venv_in_path(result, venv_path)
 
@@ -203,10 +213,10 @@ class Windows:
         banner("Check For User Name")
         username = getpass.getuser()
 
-        if " " not in username:
-            Console.ok("No spaces in user name")
-        else:
+        if " " in username:
             Console.error("User name has spaces")
+        else:
+            Console.ok("No spaces in user name")
 
 if __name__=="__main__":
     w = Windows()
