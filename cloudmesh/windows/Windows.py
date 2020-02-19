@@ -7,6 +7,63 @@ from cloudmesh.common.console import Console
 import os
 import getpass
 
+"""
+e you running in a vnenv
+are you running python 3.8.1
+are you having the newest version of pip
+is the default mongo port used
+do you have docker installed
+do you have vbox installed
+is hyperv switched on or off
+is cl installed
+how much memory do you have
+do you have free diskspace
+.... other tyings that can help us debug your environment 
+are containers running
+"""
+
+"""
+find equifalent for windows
+
+if os == "darwin":
+    import psutil
+    
+    hdd = psutil.disk_usage('/')
+    
+    print ("Total: %d GiB" % hdd.total / (2**30))
+    print ("Used: %d GiB" % hdd.used / (2**30))
+    print ("Free: %d GiB" % hdd.free / (2**30))
+    
+Shell.run("df -h")
+
+or maybe this works for all, e.g. use path, maybe we use pathlib and Path
+
+from os import path
+from shutil import disk_usage
+
+print([i / 1000000 for i in disk_usage(path.realpath('/'))])
+"""
+
+"""
+venvetest either one will work, i think
+
+pip -V starts with user home dir
+
+import sys
+
+if hasattr(sys, 'real_prefix'):
+   i am in vdir
+   
+import sys
+
+def is_venv():
+    return (hasattr(sys, 'real_prefix') or
+            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
+
+test for os.environ['VIRTUAL_ENV']
+
+"""
+
 class Windows:
 
     def check_command(self,command, test=None):
@@ -26,7 +83,11 @@ class Windows:
         #print(result)
 
 
-
+    #
+    # TODO:  this should also work if you do return not name is ENV3
+    #        use where python to find where ot is
+    #        the username shoudl be in the path of the first python that shows
+    #
     def check_venv(self, venv="~/ENV3"):
 
         banner(f"checking python environment setup")
@@ -37,13 +98,13 @@ class Windows:
         if os.path.isdir(where):
             Console.ok("ENV3 directory exists")
         else:
-            raise NotImplementedError
+            Console.error("ENV3 directory does not exists")
 
         # check if activate exists in ~\ENV3\Scripts\activate.bat
         if os.path.isfile(activate_path):
-            Console.ok("Activate exists")
+            Console.ok("Activate exists in {activate_path}")
         else:
-            raise NotImplementedError
+            Console.error("Could not find {activate_path}")
 
     def is_venv_exists(self, venv="~/ENV3"):
         venv_path = path_expand((venv))
@@ -57,13 +118,13 @@ class Windows:
         if flag_venv:
             Console.ok(f"'{command}' : venv is in path")
         else:
-            raise NotImplementedError
+            Console.error(f"'{command}' : venv is not in path")
 
         # chek if venv path is the in the first line
         if line == 1:
             Console.ok(f"'{command}' : venv is in first line")
         else:
-            raise NotImplementedError
+            Console.error(f"'{command}' : venv is not first line")
 
         # execute where pip and check if venv is in the path
 
@@ -74,13 +135,13 @@ class Windows:
         if flag_venv:
             Console.ok(f"'{command}' : venv is in path")
         else:
-            raise NotImplementedError
+            Console.ok(f"'{command}' : venv is not in path")
 
         # chek if venv path is the in the first line
         if line == 1:
             Console.ok(f"'{command}' : venv is in first line")
         else:
-            raise NotImplementedError
+            Console.ok(f"'{command}' : venv is not in first line")
 
 
         # raise NotImplementedError
