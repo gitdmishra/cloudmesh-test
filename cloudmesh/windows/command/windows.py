@@ -42,16 +42,15 @@ class WindowsCommand(PluginCommand):
 
           Checks that are missing or need implemented
 
-             6.are you running in a vnenv
-
-             4. is the default mongo port used
-             5. do you have docker installed
-             6. do you have vbox installed
-             7. is hyperv switched on or off
-             9. how much memory do you have
-            10. do you have free diskspace
-            11. are containers running
-            12. .... other tyings that can help us debug your environment
+             6. are you running in a vnenv
+             7. is the default mongo port used
+             8. do you have docker installed
+             9. do you have vbox installed
+            10. is hyperv switched on or off
+            11. how much memory do you have
+            12. do you have free diskspace
+            13. are containers running
+            14. .... other tyings that can help us debug your environment
 
         """
 
