@@ -1,15 +1,14 @@
-from subprocess import CalledProcessError
-
-from cloudmesh.common.Shell import Shell
-from cloudmesh.common.util import banner
-from cloudmesh.common.util import path_expand
-from cloudmesh.common.console import Console
-import os
 import getpass
+import os
 import platform
 import socket
 import sys
+from subprocess import CalledProcessError
+
 import psutil
+from cloudmesh.common.Shell import Shell
+from cloudmesh.common.console import Console
+from cloudmesh.common.util import path_expand
 
 """
 are you running in a vnenv
@@ -77,7 +76,7 @@ class Windows:
         mem = psutil.virtual_memory()
         total = mem.total >> 30
         available = mem.available >> 30
-        print (f"Memory: {available}GB free from {total}GB")
+        print(f"Memory: {available}GB free from {total}GB")
 
     def is_port_used(self, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -87,6 +86,7 @@ class Windows:
         return (hasattr(sys, 'real_prefix') or
                 (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
 
+    # noinspection PyPep8
     def check_mongo(self):
         if platform.system() == "Windows":
             result = Shell.run("sc.exe query MongoDB")
@@ -119,7 +119,7 @@ class Windows:
         try:
             result = Shell.run(command).strip()
 
-            if not test in result:
+            if test not in result:
                 if show:
                     Console.error(f"{test} not found in {result}")
                 else:
@@ -148,12 +148,11 @@ class Windows:
 
         else:
             Console.error("You are not running in a venv")
-        if "EVN3" not in os.environ.get("VIRTUAL_ENV"):
+        if "ENV3" not in os.environ.get("VIRTUAL_ENV"):
             Console.warning("your venv is not called ENV3. That may be ok")
 
-
         if platform.system() == "Windows":
-            where = path_expand((venv))
+            where = path_expand(venv)
             activate_path = where + "\\Scripts\\activate.bat"
             # check if the dir exists at where
             if os.path.isdir(where):

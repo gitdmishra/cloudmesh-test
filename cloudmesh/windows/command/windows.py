@@ -8,6 +8,7 @@ import platform
 
 from cloudmesh.common.debug import VERBOSE
 
+
 class WindowsCommand(PluginCommand):
 
     # noinspection PyUnusedLocal
