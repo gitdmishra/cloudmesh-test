@@ -7,6 +7,7 @@ from cloudmesh.common.console import Console
 import os
 import getpass
 import platform
+import socket
 
 """
 e you running in a vnenv
@@ -68,6 +69,10 @@ test for os.environ['VIRTUAL_ENV']
 
 class Windows:
 
+    def is_port_used(self, port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            return s.connect_ex(('localhost', port)) == 0
+
     def check_mongo(self):
         result = Shell.run("sc.exe query MongoDB")
         if "The specified service does not exist" in result \
@@ -76,6 +81,13 @@ class Windows:
         else:
             Console.error("The MOngo DB service is running")
             Console.error(result)
+
+        self.check_command("mongod.exe") # find a good test
+
+        if self.is_port_used("27017"):
+            Console.error("The mongo port 27017 is already used")
+        else:
+            Console.ok("The mongo port 27017 is free")
 
 
     def check_python(self):
