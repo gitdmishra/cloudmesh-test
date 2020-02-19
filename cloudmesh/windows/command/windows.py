@@ -70,4 +70,5 @@ class WindowsCommand(PluginCommand):
         w.check_command("cl")
         w.check_command("nmake")
         w.is_user_name_valid()
+        w.check_mongo()
         return ""

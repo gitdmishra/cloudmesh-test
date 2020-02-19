@@ -68,6 +68,16 @@ test for os.environ['VIRTUAL_ENV']
 
 class Windows:
 
+    def check_mongo(self):
+        result = Shell.run("sc.exe query MongoDB")
+        if "The specified service does not exist" in result \
+            and "FAILED" in result:
+            Console.ok("The MongoDB service is not running")
+        else:
+            Console.error("The MOngo DB service is running")
+            Console.error(result)
+
+
     def check_python(self):
         length = platform.architecture()[0]
         if  length == "32bit":
