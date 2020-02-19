@@ -74,6 +74,7 @@ class WindowsCommand(PluginCommand):
 
         w.is_user_name_valid()
         w.check_mongo()
+        w.check_command("docker --version", test="Docker version")
 
         w.usage()
         return ""

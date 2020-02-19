@@ -18,12 +18,13 @@ are you running the 64 bit version of python
 are you having the newest version of pip
 is the default mongo port used
 is cl installed
-
-do you have docker installed
-do you have vbox installed
-is hyperv switched on or off
 how much memory do you have
 do you have free diskspace
+do you have docker installed
+
+TODO
+do you have vbox installed
+is hyperv switched on or off
 are containers running
 .... other tyings that can help us debug your environment 
 """
@@ -99,9 +100,9 @@ class Windows:
             self.check_command("mongod.exe")  # find a good test
 
         if self.is_port_used(27017):
-            Console.error("OK. he mongo port 27017 is already used")
+            Console.error("The mongo port 27017 is already used")
         else:
-            Console.ok("The mongo port 27017 is free")
+            Console.ok("OK. The mongo port 27017 is free")
 
     def check_python(self):
         length = platform.architecture()[0]
