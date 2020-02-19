@@ -1,12 +1,10 @@
 from __future__ import print_function
-from cloudmesh.shell.command import command
-from cloudmesh.shell.command import PluginCommand
-from cloudmesh.windows.Windows import Windows
-from cloudmesh.common.console import Console
-from cloudmesh.common.util import path_expand
+
 import platform
 
-from cloudmesh.common.debug import VERBOSE
+from cloudmesh.shell.command import PluginCommand
+from cloudmesh.shell.command import command
+from cloudmesh.windows.Windows import Windows
 
 
 class WindowsCommand(PluginCommand):
@@ -76,6 +74,7 @@ class WindowsCommand(PluginCommand):
         w.is_user_name_valid()
         w.check_mongo()
         w.check_command("docker --version", test="Docker version")
+        w.check_command("VirtualBox --help", test="Oracle VM VirtualBox VM Selector", show=False)
 
         w.usage()
         return ""

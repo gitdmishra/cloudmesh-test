@@ -20,51 +20,19 @@ is cl installed
 how much memory do you have
 do you have free diskspace
 do you have docker installed
+do you have vbox installed
+
 
 TODO
-do you have vbox installed
 is hyperv switched on or off
 are containers running
 .... other tyings that can help us debug your environment 
 """
 
-"""
-find equifalent for windows
-
-if os == "darwin":
-    
-    
-Shell.run("df -h")
-
-or maybe this works for all, e.g. use path, maybe we use pathlib and Path
-
-from os import path
-from shutil import disk_usage
-
-print([i / 1000000 for i in disk_usage(path.realpath('/'))])
-"""
-
-"""
-venvetest either one will work, i think
-
-pip -V starts with user home dir
-
-import sys
-
-if hasattr(sys, 'real_prefix'):
-   i am in vdir
-   
-
-
-test for os.environ['VIRTUAL_ENV']
-
-"""
-
-
 class Windows:
 
     def __init__(self):
-        check = []
+        pass
 
     def usage(self):
         hdd = psutil.disk_usage('/')
@@ -138,7 +106,7 @@ class Windows:
     #        use where python to find where ot is
     #        the username shoudl be in the path of the first python that shows
     #
-    def check_venv(self, venv="~/ENV3"):
+    def check_venv(self):
 
         # banner(f"checking python venv")
 
@@ -152,6 +120,7 @@ class Windows:
             Console.warning("your venv is not called ENV3. That may be ok")
 
         if platform.system() == "Windows":
+            venv = os.environ.get("VIRTUAL_ENV")
             where = path_expand(venv)
             activate_path = where + "\\Scripts\\activate.bat"
             # check if the dir exists at where
@@ -166,26 +135,6 @@ class Windows:
             else:
                 Console.error("Could not find {activate_path}")
 
-        # execute where pip and check if venv is in the path
-
-        if platform.system() == "Windows":
-            command = "where pip"
-        else:
-            command = "which pip"
-
-    def is_venv_in_path(self, result, venv_path):
-
-        result_list = result.split("\r\n")
-        line = 0
-        flag_venv = False
-
-        for item in result_list:
-            line = line + 1
-            if venv_path in item:
-                flag_venv = True
-                break
-
-        return flag_venv, line
 
     def is_user_name_valid(self):
         # banner("Check For User Name")
