@@ -53,14 +53,25 @@ class WindowsCommand(PluginCommand):
 
         w = Windows()
 
+        #
+        # Python setup
+        #
         w.check_venv()
-
         w.check_command("python --version", test="3.8.1")
         w.check_python()
         w.check_command("pip --version", test="20.0.2")
+
+        #
+        # command tool setup
+        #
+
         if platform.system() == "Windows":
             w.check_command("cl")
             w.check_command("nmake")
+        w.check_command("git --version", test="git version")
+        w.check_command("ssh", test="usage", show=False)
+        w.check_command("ssh-keygen --help", test="usage", show=False)
+
         w.is_user_name_valid()
         w.check_mongo()
         return ""

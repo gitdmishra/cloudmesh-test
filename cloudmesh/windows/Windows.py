@@ -8,6 +8,7 @@ import os
 import getpass
 import platform
 import socket
+import sys
 
 """
 e you running in a vnenv
@@ -57,23 +58,25 @@ import sys
 if hasattr(sys, 'real_prefix'):
    i am in vdir
    
-import sys
 
-def is_venv():
-    return (hasattr(sys, 'real_prefix') or
-            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
 
 test for os.environ['VIRTUAL_ENV']
 
 """
 
 
-
 class Windows:
+
+    def __init__(self):
+        check = []
 
     def is_port_used(self, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             return s.connect_ex(('localhost', port)) == 0
+
+    def is_venv(self):
+        return (hasattr(sys, 'real_prefix') or
+                (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
 
     def check_mongo(self):
         if platform.system() == "Windows":
@@ -85,37 +88,41 @@ class Windows:
                 Console.error("The MOngo DB service is running")
                 Console.error(result)
 
-            self.check_command("mongod.exe") # find a good test
+            self.check_command("mongod.exe")  # find a good test
 
         if self.is_port_used(27017):
-            Console.error("The mongo port 27017 is already used")
+            Console.error("OK. he mongo port 27017 is already used")
         else:
             Console.ok("The mongo port 27017 is free")
 
-
     def check_python(self):
         length = platform.architecture()[0]
-        if  length == "32bit":
+        if length == "32bit":
             Console.error("You run Python 32 bit")
         elif length == "64bit":
-            Console.ok("You run Python 64 bit")
+            Console.ok("OK. You run Python 64 bit")
         else:
             Console.error(f"Pythin is not 32 or 64 bit: {length}")
 
-    def check_command(self,command, test=None):
+    def check_command(self, command, test=None, show=True):
 
-        banner(f"testing command: {command}")
+        # banner(f"testing command: {command}")
         try:
-            result = Shell.run(command)
+            result = Shell.run(command).strip()
 
             if not test in result:
-                Console.error("{test} not found in {result}")
+                if show:
+                    Console.error(f"{test} not found in {result}")
+                else:
+                    Console.error("{command} not found")
             else:
-                Console.ok("test passed")
+                if show:
+                    Console.ok(f"OK. {test} found in {result}")
+                else:
+                    Console.ok(f"OK. {command} found")
 
         except CalledProcessError:
             Console.error(f"command '{command}' not successful")
-
 
     #
     # TODO:  this should also work if you do return not name is ENV3
@@ -124,43 +131,32 @@ class Windows:
     #
     def check_venv(self, venv="~/ENV3"):
 
-        banner(f"checking python environment setup")
+        # banner(f"checking python venv")
+
+        if self.is_venv():
+            Console.ok("OK. you are running in a venv")
+            print("    VIRTUAL_ENV=", os.environ.get("VIRTUAL_ENV"), sep="")
+
+        else:
+            Console.error("You are not running in a venv")
+        if "EVN3" not in os.environ.get("VIRTUAL_ENV"):
+            Console.warning("your venv is not called ENV3. That may be ok")
+
 
         if platform.system() == "Windows":
             where = path_expand((venv))
             activate_path = where + "\\Scripts\\activate.bat"
             # check if the dir exists at where
             if os.path.isdir(where):
-                Console.ok("ENV3 directory exists")
+                Console.ok("OK. ENV3 directory exists")
             else:
                 Console.error("ENV3 directory does not exists")
 
             # check if activate exists in ~\ENV3\Scripts\activate.bat
             if os.path.isfile(activate_path):
-                Console.ok("Activate exists in {activate_path}")
+                Console.ok("OK. Activate exists in {activate_path}")
             else:
                 Console.error("Could not find {activate_path}")
-
-    def is_venv_exists(self, venv="~/ENV3"):
-        venv_path = path_expand((venv))
-
-        # execute where python and check if venv is in the path
-
-        if platform.system() == "Windows":
-            command = "where python"
-            result = Shell.run(command)
-            flag_venv,line = self.is_venv_in_path(result, venv_path)
-
-            if flag_venv:
-                Console.ok(f"'{command}' : venv is in path")
-            else:
-                Console.error(f"'{command}' : venv is not in path")
-
-            # chek if venv path is the in the first line
-            if line == 1:
-                Console.ok(f"'{command}' : venv is in first line")
-            else:
-                Console.error(f"'{command}' : venv is not first line")
 
         # execute where pip and check if venv is in the path
 
@@ -169,31 +165,7 @@ class Windows:
         else:
             command = "which pip"
 
-
-        result = Shell.run(command)
-        flag_venv, line = self.is_venv_in_path(result, venv_path)
-
-        if flag_venv:
-            Console.ok(f"'{command}' : venv is in path")
-        else:
-            Console.ok(f"'{command}' : venv is not in path")
-
-        # chek if venv path is the in the first line
-        if line == 1:
-            Console.ok(f"'{command}' : venv is in first line")
-        else:
-            Console.ok(f"'{command}' : venv is not in first line")
-
-
-        # raise NotImplementedError
-
-        # chek if venv path is the in the first line
-
-        # raise NotImplementedError
-
-        return True
-
-    def is_venv_in_path(self,result,venv_path):
+    def is_venv_in_path(self, result, venv_path):
 
         result_list = result.split("\r\n")
         line = 0
@@ -205,18 +177,19 @@ class Windows:
                 flag_venv = True
                 break
 
-        return flag_venv,line
+        return flag_venv, line
 
     def is_user_name_valid(self):
-        banner("Check For User Name")
+        # banner("Check For User Name")
         username = getpass.getuser()
 
         if " " in username:
             Console.error("User name has spaces")
         else:
-            Console.ok("No spaces in user name")
+            Console.ok("OK. No spaces in user name")
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     w = Windows()
     # w.check_command("python --version", test="3.8.1")
     # w.check_command("cl")
