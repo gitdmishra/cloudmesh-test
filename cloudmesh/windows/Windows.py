@@ -22,7 +22,6 @@ do you have free diskspace
 do you have docker installed
 do you have vbox installed
 
-
 TODO
 is hyperv switched on or off
 are containers running
