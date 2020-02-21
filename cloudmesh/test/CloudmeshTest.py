@@ -137,14 +137,14 @@ class CloudmeshTest:
                 if show:
                     Console.error(f"{test} not found in {result}")
                 else:
-                    Console.error("{command} not found")
+                    Console.error(f"{command} not found")
             else:
                 if show:
                     Console.ok(f"OK. {test} found in {result}")
                 else:
                     Console.ok(f"OK. {command} found")
 
-        except CalledProcessError:
+        except:
             Console.error(f"command '{command}' not successful")
 
     #
