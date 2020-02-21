@@ -168,7 +168,7 @@ class CloudmeshTest:
         if platform.system() == "Windows":
             venv = os.environ.get("VIRTUAL_ENV")
             where = path_expand(venv)
-            activate_path = where + "\\Scripts\\activate.bat"
+            activate_path = f"{where}\\Scripts\\activate.bat"
             # check if the dir exists at where
             if os.path.isdir(where):
                 Console.ok("OK. ENV3 directory exists")
@@ -177,9 +177,9 @@ class CloudmeshTest:
 
             # check if activate exists in ~\ENV3\Scripts\activate.bat
             if os.path.isfile(activate_path):
-                Console.ok("OK. Activate exists in {activate_path}")
+                Console.ok(f"OK. Activate exists in {activate_path}")
             else:
-                Console.error("Could not find {activate_path}")
+                Console.error(f"Could not find {activate_path}")
 
 
     def is_user_name_valid(self):
@@ -193,9 +193,9 @@ class CloudmeshTest:
 
 
 if __name__ == "__main__":
-    w = Windows()
-    # w.check_command("python --version", test="3.8.1")
-    # w.check_command("cl")
-    # w.check_venv()
-    # w.is_venv_exists()
-    w.is_user_name_valid()
+    _test = CloudmeshTest()
+    # _test.check_command("python --version", test="3.8.1")
+    # _test.check_command("cl")
+    # _test.check_venv()
+    # _test.is_venv_exists()
+    _test.is_user_name_valid()
