@@ -133,6 +133,8 @@ class CloudmeshTest:
         try:
             result = Shell.run(command).strip()
 
+            if test is None:
+                test = ""
             if test not in result:
                 if show:
                     Console.error(f"{test} not found in {result}")
@@ -145,7 +147,7 @@ class CloudmeshTest:
                     Console.ok(f"OK. {command} found")
 
         except:
-            Console.error(f"command '{command}' not successful")
+            Console.error(f"command '{command}' not successful + {result}")
 
     #
     # TODO:  this should also work if you do return not name is ENV3
@@ -195,7 +197,8 @@ class CloudmeshTest:
 if __name__ == "__main__":
     _test = CloudmeshTest()
     # _test.check_command("python --version", test="3.8.1")
-    # _test.check_command("cl")
+    #_test.check_command("nmake",show=False)
+    _test.check_command("ssh", test="usage", show=True)
     # _test.check_venv()
     # _test.is_venv_exists()
-    _test.is_user_name_valid()
+    #_test.is_user_name_valid()

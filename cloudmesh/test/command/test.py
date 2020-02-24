@@ -64,8 +64,8 @@ class TestCommand(PluginCommand):
         #
 
         if platform.system() == "Windows":
-            tester.check_command("cl")
-            tester.check_command("nmake")
+            tester.check_command("cl", show=False)
+            tester.check_command("nmake",show=False)
         tester.check_command("git --version", test="git version")
         tester.check_command("ssh", test="usage", show=False)
         tester.check_command("ssh-keygen --help", test="usage", show=False)
